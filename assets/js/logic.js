@@ -86,33 +86,30 @@ function gameOver() {
     timer.textContent = "0";
 
     // Display final score
-    document.getElementById("final-score").textContent = currentScore;
+    const finalScoreElement = document.getElementById("final-score");
+    finalScoreElement.textContent = currentScore;
 
     question.classList.add("hide");
     document.getElementById("end-screen").classList.remove("hide");
+    displayHighScores(currentScore); // Pass the current score to displayHighScores
 }
-
 
 submitButton.addEventListener('click', function () {
     const userInitials = initials.value.trim();
-    
-    if (initials !== '') {
+
+    if (userInitials !== '') { // Fix the condition to check userInitials
         const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
         const newScore = {
-            initials: initials,
+            initials: userInitials, // Fix variable name to userInitials
             score: currentScore
         };
         highScores.push(newScore);
-        highScores.sort((a, b) => b.score - a.score); // Optional: sort scores in descending order
+        highScores.sort((a, b) => b.score - a.score);
 
         localStorage.setItem('highScores', JSON.stringify(highScores));
-        
-        // Optional: Redirect to high scores page or display a confirmation message
-        feedback.classList.remove('hide');
-        feedback.textContent = 'Score submitted successfully!';
 
-        // Clear input field
-        initials.value = '';
+        // Redirect to highscores.html
+        window.location.href = 'highscores.html';
     } else {
         feedback.classList.remove('hide');
         feedback.textContent = 'Please enter your initials to submit your score.';
@@ -120,7 +117,7 @@ submitButton.addEventListener('click', function () {
     }
 });
 
-function displayHighScores() {
+function displayHighScores(finalScore) {
     const highScoresList = JSON.parse(localStorage.getItem('highScores')) || [];
     const highScoresElement = document.getElementById('highscores');
     highScoresElement.innerHTML = '';
@@ -130,12 +127,16 @@ function displayHighScores() {
         scoreElement.textContent = `${score.initials}: ${score.score}`;
         highScoresElement.appendChild(scoreElement);
     });
+
+    // Add the final score to the high scores list
+    const finalScoreElement = document.createElement('li');
+    finalScoreElement.textContent = `Your Score: ${finalScore}`;
+    highScoresElement.appendChild(finalScoreElement);
 }
-
-
 
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('highscores')) {
         displayHighScores();
     }
 });
+

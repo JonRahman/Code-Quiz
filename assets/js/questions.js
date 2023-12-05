@@ -10,7 +10,7 @@ const questions = [
       correctIndex: "c) var myVar;"
     },
     {
-      title: "Question 3?",
+      title: "Question 3: JavaScript Function",
       choices: ["a) func", "b) function", "c) define", "d) fn"],
       correctIndex: "b) function"
     },
