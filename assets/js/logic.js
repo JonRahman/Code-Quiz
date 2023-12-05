@@ -5,11 +5,13 @@ let choices = document.getElementById("choices");
 let initials = document.getElementById("initials");
 let submitButton = document.getElementById("submit");
 let feedback = document.getElementById("feedback");
+let highScores = document.getElementById("highscores");
+
 
 let time = 30;
 let timeCount;
 
-let score = 0;
+let currentScore = 0;  // Change variable name to avoid conflict
 
 function setupTimer() {
     timeCount = setInterval(function () {
@@ -54,7 +56,7 @@ function buttonClick(event) {
 
     if (targetEl.value === questions[currentQuestionIndex].correctIndex) {
         console.log('Correct!');
-        score += 10;
+        currentScore += 10;
     } else {
         console.log('Incorrect.');
         time -= 10;
@@ -76,14 +78,6 @@ choices.addEventListener('click', function (event) {
 });
 
 function endQuiz() {
-    clearInterval(timeCount);
-    timer.textContent = "0";
-
-    if (currentQuestionIndex < questions.length) {
-        feedback.textContent = "Time's up!";
-    } else {
-        feedback.textContent = "Quiz completed!";
-    }
     gameOver();
 }
 
@@ -92,12 +86,35 @@ function gameOver() {
     timer.textContent = "0";
 
     if (currentQuestionIndex < questions.length) {
-        feedback.textContent = "Time's up!";
     } else {
-        feedback.textContent = "Quiz completed! Your score: " + score;
-        document.getElementById("final-score").textContent = score;
+        document.getElementById("final-score").textContent = currentScore;
     }
 
     question.classList.add("hide");
     document.getElementById("end-screen").classList.remove("hide");
 }
+
+
+submitButton.addEventListener('click', function () {
+    const userInitials = initials.value.trim();
+    const finalScoreElement = document.getElementById('final-score');
+    const finalScore = finalScoreElement.textContent || finalScoreElement.innerText;
+
+    if (userInitials !== '') {
+        const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+        const newScore = {
+            initials: userInitials,
+            score: parseInt(finalScore, 10)
+        };
+        highScores.push(newScore);
+        
+        localStorage.setItem('highScores', JSON.stringify(highScores));
+        feedback.classList.remove('hide');
+        feedback.textContent = 'Score submitted successfully!';
+        initials.value = '';
+    } else {
+        feedback.classList.remove('hide');
+        feedback.textContent = 'Please enter your initials to submit your score.';
+    }
+});
+
