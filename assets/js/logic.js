@@ -6,7 +6,7 @@ let initials = document.getElementById("initials");
 let submitButton = document.getElementById("submit");
 let feedback = document.getElementById("feedback");
 
-let time = 50;
+let time = 30;
 let timeCount;
 
 let score = 0;
@@ -57,7 +57,7 @@ function buttonClick(event) {
         score += 10;
     } else {
         console.log('Incorrect.');
-        time -= 25;
+        time -= 10;
         time = (time < 0) ? 0 : time;
         timer.textContent = time;
     }
@@ -95,7 +95,7 @@ function gameOver() {
         feedback.textContent = "Time's up!";
     } else {
         feedback.textContent = "Quiz completed! Your score: " + score;
-        document.getElementById("final-score").textContent = "Your final score: " + score;
+        document.getElementById("final-score").textContent = score;
     }
 
     question.classList.add("hide");
