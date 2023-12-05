@@ -26,6 +26,7 @@ The application follows the instructions outlined below:
 
 https://github.com/JonRahman/Code-Quiz
 
+https://jonrahman.github.io/Code-Quiz/
 
 
 

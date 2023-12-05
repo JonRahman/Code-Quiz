@@ -85,10 +85,8 @@ function gameOver() {
     clearInterval(timeCount);
     timer.textContent = "0";
 
-    if (currentQuestionIndex < questions.length) {
-    } else {
-        document.getElementById("final-score").textContent = currentScore;
-    }
+    // Display final score
+    document.getElementById("final-score").textContent = currentScore;
 
     question.classList.add("hide");
     document.getElementById("end-screen").classList.remove("hide");
@@ -97,24 +95,47 @@ function gameOver() {
 
 submitButton.addEventListener('click', function () {
     const userInitials = initials.value.trim();
-    const finalScoreElement = document.getElementById('final-score');
-    const finalScore = finalScoreElement.textContent || finalScoreElement.innerText;
-
-    if (userInitials !== '') {
+    
+    if (initials !== '') {
         const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
         const newScore = {
-            initials: userInitials,
-            score: parseInt(finalScore, 10)
+            initials: initials,
+            score: currentScore
         };
         highScores.push(newScore);
-        
+        highScores.sort((a, b) => b.score - a.score); // Optional: sort scores in descending order
+
         localStorage.setItem('highScores', JSON.stringify(highScores));
+        
+        // Optional: Redirect to high scores page or display a confirmation message
         feedback.classList.remove('hide');
         feedback.textContent = 'Score submitted successfully!';
+
+        // Clear input field
         initials.value = '';
     } else {
         feedback.classList.remove('hide');
         feedback.textContent = 'Please enter your initials to submit your score.';
+        displayHighScores();
     }
 });
 
+function displayHighScores() {
+    const highScoresList = JSON.parse(localStorage.getItem('highScores')) || [];
+    const highScoresElement = document.getElementById('highscores');
+    highScoresElement.innerHTML = '';
+
+    highScoresList.forEach(score => {
+        const scoreElement = document.createElement('li');
+        scoreElement.textContent = `${score.initials}: ${score.score}`;
+        highScoresElement.appendChild(scoreElement);
+    });
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('highscores')) {
+        displayHighScores();
+    }
+});
