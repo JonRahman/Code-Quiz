@@ -2,12 +2,17 @@ let timer = document.querySelector("#time")
 let startButton = document.querySelector("#start")
 let question = document.querySelector("#questions")
 let choices = document.querySelector("#choices")
-let feedback = document.querySelector("#feedback")
-let initial = document.querySelector("#initials")
+
+//let finalScore =  document.querySelector("#final-score")
+let initials = document.querySelector("#initials")
 let submitButton = document.querySelector("#submit")
+let feedback = document.querySelector("#feedback")
 
 let time = 50;
 let timeCount;
+
+let score = 0;
+
 
 function setupTimer() {
     timeCount = setInterval(function () {
@@ -22,21 +27,9 @@ function setupTimer() {
     }, 1000); // 1000 milliseconds = 1 second
 }
 
-
-// ... other functions ...
-
-
-
-// function checkAnswer() {
-// }
-
-// function updateTimer() {
-// }
-
-
 let currentQuestionIndex = 0;
 
-document.getElementById('start-screen').addEventListener('click', function () {
+    document.getElementById('start-screen').addEventListener('click', function () {
     document.getElementById('start-screen').setAttribute('class', 'hide');
     document.getElementById('questions').removeAttribute('class');
     showQuestion();
@@ -68,8 +61,12 @@ function showQuestion() {
 function buttonClick(event) {
     var targetEl = event.target;
     console.log(targetEl.value)
+
+    const currentQuestion = questions[currentQuestionIndex];
+
     if (targetEl.value === questions[currentQuestionIndex].correctIndex) {
         console.log('Correct!');
+        score += 10;
     } else {
         console.log('Incorrect.');
         time -= 25; // Decrease the time by 25 seconds
@@ -95,8 +92,6 @@ function endQuiz() {
     clearInterval(timeCount); // Stop the timer
     timer.textContent = "0"; // Ensure the timer display shows 0 when time is up
 
-    // Add your logic for ending the quiz, such as displaying a message or showing the final score.
-    // For example:
     if (currentQuestionIndex < questions.length) {
         // If there are still questions remaining, the player ran out of time.
         feedback.textContent = "Time's up!";
@@ -109,8 +104,21 @@ function endQuiz() {
 }
 
 function gameOver() {
-    document.getElementById('questions').setAttribute('class', 'hide');
-    document.getElementById('end-screen').removeAttribute('class');
+    clearInterval(timeCount);
+    timer.textContent = "0";
+
+    if (currentQuestionIndex < questions.length) {
+        feedback.textContent = "Time's up!";
+    } else {
+        feedback.textContent = "Quiz completed! Your score: " + score;
+
+        // Display the final score in the element with id "final-score"
+        document.getElementById("final-score").textContent = score;
+    }
+
+    // You might want to handle the user's initials and submission here
+    document.getElementById("questions").setAttribute("class", "hide");
+    document.getElementById("end-screen").removeAttribute("class");
 }
 
 
