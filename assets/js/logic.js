@@ -1,5 +1,5 @@
 
-let timer = document.querySelector("#timer")
+let timer = document.querySelector("#time")
 let startButton = document.querySelector("#start")
 let question = document.querySelector("#questions")
 let choices = document.querySelector("#choices")
@@ -7,18 +7,33 @@ let feedback = document.querySelector("#feedback")
 let initial = document.querySelector("#initials")
 let submitButton = document.querySelector("#submit")
 
-// function startQuiz() {
-// }
-// function question() {
-// }
+let time = 100;
+let timeCount;
+
+function setupTimer() {
+    timeCount = setInterval(function () {
+        time--; // Decrement the remaining time
+        var timeReset = timer.textContent = "Time: " + time; // Update the timer element's text content
+        if (time <= 0) {
+            clearInterval(timeCount);
+            timer.textContent = timeReset;
+            // Add logic for ending the quiz when time is up
+            endQuiz();
+        }
+    }, 1000); // 1000 milliseconds = 1 second
+}
+
+
+// ... other functions ...
+
+
+
 // function checkAnswer() {
 // }
-// function timer() {
-// }
+
 // function updateTimer() {
 // }
-// function endQuiz() {
-// }
+
 
 let currentQuestionIndex = 0;
 
@@ -26,6 +41,7 @@ document.getElementById('start-screen').addEventListener('click', function() {
     document.getElementById('start-screen').setAttribute('class','hide');
     document.getElementById('questions').removeAttribute('class');
     showQuestion();
+    setupTimer();
 });
   
 function showQuestion() {
@@ -73,4 +89,7 @@ function showQuestion() {
 
     choices.onclick=buttonClick 
 
+    // function endQuiz() {
+    //     // Your logic for ending the quiz
+    // }
     
