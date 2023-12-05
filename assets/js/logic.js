@@ -1,4 +1,3 @@
-
 let timer = document.querySelector("#time")
 let startButton = document.querySelector("#start")
 let question = document.querySelector("#questions")
@@ -13,7 +12,7 @@ let timeCount;
 function setupTimer() {
     timeCount = setInterval(function () {
         time--; // Decrement the remaining time
-        var timeReset = timer.textContent = "Time: " + time; // Update the timer element's text content
+        var timeReset = timer.textContent = time; // Update the timer element's text content
         if (time <= 0) {
             clearInterval(timeCount);
             timer.textContent = timeReset;
@@ -77,7 +76,7 @@ function buttonClick(event) {
         if (time < 0) {
             time = 0; // Make sure the time doesn't go below 0
         }
-        timer.textContent = "Time: " + time; // Update the timer element's text content
+        timer.textContent = time; // Update the timer element's text content
     }
     currentQuestionIndex++
     if (currentQuestionIndex === questions.length) {
@@ -88,13 +87,31 @@ function buttonClick(event) {
     }
 }
 
+
+
+choices.onclick = buttonClick
+
+function endQuiz() {
+    clearInterval(timeCount); // Stop the timer
+    timer.textContent = "0"; // Ensure the timer display shows 0 when time is up
+
+    // Add your logic for ending the quiz, such as displaying a message or showing the final score.
+    // For example:
+    if (currentQuestionIndex < questions.length) {
+        // If there are still questions remaining, the player ran out of time.
+        feedback.textContent = "Time's up!";
+    } else {
+        // All questions have been answered, display the final score or any summary message.
+        feedback.textContent = "Quiz completed!";
+    }
+    gameOver()
+    
+}
+
 function gameOver() {
     document.getElementById('questions').setAttribute('class', 'hide');
     document.getElementById('end-screen').removeAttribute('class');
 }
 
-choices.onclick = buttonClick
 
-function endQuiz() {
-    // Your logic for ending the quiz
-}
+// when the game ends the timer should stop
